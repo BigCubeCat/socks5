@@ -1,10 +1,12 @@
 package proxy
 
-import "time"
+import (
+	"time"
+)
 
 // cacheCleaner запускается в горутине и управляет размером кэша
-func (ps *ProxyServer) cacheCleaner() {
-	ticker := time.NewTicker(1 * time.Minute) // Проверяем кэш каждые 1 минуту
+func (ps *ProxyServer) cacheCleaner(vacuumDelay int) {
+	ticker := time.NewTicker(time.Duration(vacuumDelay) * time.Minute)
 	defer ticker.Stop()
 
 	for range ticker.C {

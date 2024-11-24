@@ -23,14 +23,14 @@ type ProxyServer struct {
 	ttl        time.Duration
 }
 
-func NewProxyServer(port int, maxCache int, ttl time.Duration) *ProxyServer {
+func NewProxyServer(port int, maxCache int, ttl time.Duration, vacuumDelay int) *ProxyServer {
 	ps := &ProxyServer{
 		Port:     port,
 		cache:    make(map[string]cachedIP),
 		maxCache: maxCache,
-		ttl:      ttl,
+		ttl:      ttl * time.Second,
 	}
-	go ps.cacheCleaner()
+	go ps.cacheCleaner(vacuumDelay)
 	return ps
 }
 
